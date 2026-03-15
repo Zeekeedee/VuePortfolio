@@ -1,0 +1,53 @@
+@use '../settings/colors' as colors;
+
+/* Minimalist styles for buttons, inputs, lists, etc. */
+button,
+input[type='submit'],
+input[type='button'] {
+  padding: 0.5em 1em;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  color: #222;
+  border-radius: 4px;
+  font-size: 1em;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+button:hover,
+input[type='submit']:hover,
+input[type='button']:hover {
+  background: #eaeaea;
+  border-color: #888;
+}
+input,
+textarea,
+select {
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+  background: #fff;
+  color: #222;
+  transition: border-color 0.2s;
+}
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #888;
+  outline: none;
+}
+ul,
+ol {
+  margin: 1em 0;
+  padding-left: 1.5em;
+  color: #222;
+}
+li {
+  margin-bottom: 0.5em;
+}
+body {
+  background: colors.$color-bg;
+  color: colors.$color-legend;
+}
