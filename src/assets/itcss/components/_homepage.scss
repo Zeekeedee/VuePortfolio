@@ -1,106 +1,242 @@
 @use '../settings/colors' as colors;
 
-// Homepage component styles for GMK Oblivion theme
+//Header
+.c-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.5em 2em 1em 2em;
+  border-radius: 0.5em;
+  margin-bottom: 2em;
+  width: min(1400px, 90%);
+  margin: 0 auto;
+
+  &__title {
+    color: colors.$color-cyan;
+    font-size: 2.25em;
+    font-weight: 700;
+    margin: 0;
+    line-height: 2.5rem;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__status {
+    color: colors.$color-green;
+    font-size: 1em;
+    font-weight: 600;
+    margin-left: auto;
+    margin-top: 0.25em;
+  }
+
+  &__version {
+    color: colors.$color-comment;
+    font-size: 1.1em;
+    font-weight: 400;
+    margin-top: 1em;
+  }
+}
 
 .c-homepage {
-  color: colors.$color-fg;
-  min-height: 100vh;
-  padding: 2em;
-  width: min(1200px, 90%);
-  margin: 0 auto;
-}
-
-.c-homepage__grid {
   display: grid;
-  grid-template-columns: 1.2fr 1.5fr 1fr;
-  grid-template-rows: 180px 220px 160px 180px;
-  gap: 2em;
-  grid-template-areas:
-    'hero about achievements'
-    'hero projects experience'
-    'hero skills experience'
-    'hero contact contact';
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 180px;
+  gap: 1rem;
+  perspective: 1000px;
+  min-height: calc(100vh - 180px - 60px);
+  width: min(1400px, 90%);
+  padding: 2em;
+  margin: 0 auto;
+
+  color: colors.$color-fg;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+  section {
+    position: relative;
+    border: 1px solid var(--section-border);
+    border-radius: 1.5rem;
+    padding: 2em;
+
+    cursor: pointer;
+    overflow: hidden;
+    background-color: var(--section-bg);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+      filter: brightness(1.15);
+      transform: translateY(-8px) scale(1.02);
+      z-index: 10;
+      box-shadow: 0 15px 30px var(--section-border);
+    }
+  }
+
+  .c-section-title {
+    font-size: 1em;
+    font-weight: 600;
+    color: var(--section-accent);
+  }
+
+  .c-section-content {
+    font-size: 1em;
+    font-weight: 600;
+    line-height: 1.5;
+    opacity: 0.9;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .c-hero {
+    --section-bg: #{colors.$color-mod};
+    --section-border: #{colors.$color-altmod};
+    --section-accent: #{colors.$color-blue};
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 220px;
+    grid-row: span 2 / span 2;
+    grid-column: span 2 / span 2;
+  }
+
+  .c-about {
+    --section-bg: #{colors.$color-bg-blue-dark};
+    --section-border: #{colors.$color-border-blue};
+    --section-accent: #{colors.$color-blue};
+  }
+
+  .c-projects {
+    --section-bg: #{colors.$color-bg-purple-dark};
+    --section-border: #{colors.$color-border-purple};
+    --section-accent: #{colors.$color-purple};
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5em;
+    padding: 2em;
+
+    .c-section-content {
+      order: 1;
+      width: 60px;
+      height: 60px;
+      // background-image: url('../../icons/github-svgrepo-com.svg');
+      // color: var(--section-accent);
+      // background-repeat: no-repeat;
+      // background-position: center;
+      // background-size: contain;
+
+      background-color: var(--section-accent, #fff);
+      mask-image: url('../../icons/github-svgrepo-com.svg');
+      mask-size: contain;
+      mask-repeat: no-repeat;
+
+      // Use -webkit prefixes for broader browser support
+      -webkit-mask-image: url('../../icons/github-svgrepo-com.svg');
+      -webkit-mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+    }
+
+    .c-section-title {
+      order: 2;
+      font-size: 1.1em;
+      text-align: center;
+    }
+  }
+
+  .c-contact {
+    --section-bg: #{colors.$color-bg-red-dark};
+    --section-border: #{colors.$color-border-red};
+    --section-accent: #{colors.$color-red};
+
+    grid-column: span 2 / span 2;
+    grid-row: span 1 / span 1;
+    align-content: center;
+  }
+
+  .c-skills {
+    --section-bg: #{colors.$color-bg-purple-dark};
+    --section-border: #{colors.$color-border-purple};
+    --section-accent: #{colors.$color-purple};
+
+    padding: 2em;
+  }
+
+  .c-stack {
+    --section-bg: #{colors.$color-bg-green-dark};
+    --section-border: #{colors.$color-border-green};
+    --section-accent: #{colors.$color-green};
+    grid-row: span 2 / span 2;
+    grid-column: span 1 / span 1;
+  }
+
+  .c-experience {
+    --section-bg: #{colors.$color-mod};
+    --section-border: #{colors.$color-cyan};
+    --section-accent: #{colors.$color-cyan};
+    animation: collapseToSmall 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+    &--expanded {
+      grid-row: span 4 / span 2;
+      grid-column: span 2 / span 2;
+      animation: expandToLarge 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+  }
 }
 
-.c-hero {
-  grid-area: hero;
-  background: colors.$color-mod;
-  color: colors.$color-blue;
-  border: 2px solid colors.$color-blue;
-  padding: 2em;
-  border-radius: 8px;
+// Keyframe animations
+@keyframes expandToLarge {
+  0% {
+    grid-column: span 1;
+    grid-row: span 1;
+    opacity: 0.8;
+    transform: scale(0.95);
+  }
+  100% {
+    grid-column: 1 / span 3;
+    grid-row: 1 / span 3;
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes collapseToSmall {
+  0% {
+    grid-column: 1 / span 3;
+    grid-row: 1 / span 3;
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    grid-column: span 1;
+    grid-row: span 1;
+    opacity: 0.8;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes contentFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.c-footer {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-width: 220px;
-  min-height: 100%;
-}
+  margin-inline: 2em;
+  width: min(1400px, 90%);
+  margin: 0 auto;
+  border-top: 1px solid colors.$color-altmod;
+  padding-top: 2em;
+  justify-content: space-between;
+  font-size: 0.75em;
+  color: colors.$color-comment;
 
-.c-about {
-  grid-area: about;
-  background: colors.$color-mod;
-  color: colors.$color-green;
-  border: 2px solid colors.$color-green;
-  padding: 2em;
-  border-radius: 8px;
-  min-height: 180px;
-}
-
-.c-projects {
-  grid-area: projects;
-  background: colors.$color-mod;
-  color: colors.$color-orange;
-  border: 2px solid colors.$color-orange;
-  padding: 2em;
-  border-radius: 8px;
-  min-height: 220px;
-}
-
-.c-skills {
-  grid-area: skills;
-  background: colors.$color-mod;
-  color: colors.$color-purple;
-  border: 2px solid colors.$color-purple;
-  padding: 2em;
-  border-radius: 8px;
-  min-height: 160px;
-}
-
-.c-contact {
-  grid-area: contact;
-  background: colors.$color-mod;
-  color: colors.$color-cyan;
-  border: 2px solid colors.$color-cyan;
-  padding: 2em;
-  border-radius: 8px;
-  min-height: 180px;
-}
-
-.c-achievements {
-  grid-area: achievements;
-  background: colors.$color-mod;
-  color: colors.$color-yellow;
-  border: 2px solid colors.$color-yellow;
-  padding: 2em;
-  border-radius: 8px;
-  min-height: 180px;
-}
-
-.c-experience {
-  grid-area: experience;
-  background: colors.$color-mod;
-  color: colors.$color-red;
-  border: 2px solid colors.$color-red;
-  padding: 2em;
-  border-radius: 8px;
-  min-height: 220px;
-}
-
-.c-homepage__grid section h2 {
-  margin-top: 0;
-  font-size: 2em;
-}
-
-.c-homepage__grid section ul {
-  margin: 1em 0 0 0;
+  a {
+    padding-inline: 0.5em;
+  }
 }

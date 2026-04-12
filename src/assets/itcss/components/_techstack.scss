@@ -1,0 +1,54 @@
+@use '../settings/colors' as colors;
+
+.c-stack-content {
+  font-size: 0.9em;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2em;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.c-stack-category {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+  margin-top: 0.5em;
+
+  &__title {
+    font-size: 0.95em;
+    font-weight: 700;
+    color: colors.$color-fg;
+    margin: 0;
+    letter-spacing: 0.05em;
+  }
+
+  &__items {
+    display: flex;
+    gap: 0.5em;
+    flex-flow: wrap;
+    padding-left: 0;
+    margin: 0;
+  }
+
+  &__item {
+    font-size: 0.85em;
+    font-weight: 500;
+    color: colors.$color-fg;
+    margin: 0;
+    line-height: 1.4;
+    padding: 0.5em 0.8em;
+    border-radius: 5px;
+    background:rgba(0, 0, 0, 0.2);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

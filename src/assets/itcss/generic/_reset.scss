@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Fira+Mono:wght@400;700&display=swap');
+
 /* BEMIT Reset Styles */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -16,14 +18,18 @@ time, mark, audio, video {
   padding: 0;
   border: 0;
   font-size: 100%;
-  font: inherit;
   vertical-align: baseline;
 }
+
 body {
   line-height: 1;
-  font-family: 'Inter', Arial, sans-serif;
+  font-family: 'JetBrains Mono', 'Fira Mono', 'Consolas', monospace;
   background: #fff;
   color: #222;
+  letter-spacing: -0.025em;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
 }
 ul, ol {
   list-style: none;
@@ -31,4 +37,9 @@ ul, ol {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }

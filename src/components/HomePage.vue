@@ -1,62 +1,79 @@
 <template>
-  <div class="c-homepage">
-    <div class="c-homepage__grid">
-      <!-- Hero Section -->
-      <section class="c-hero">
-        <h1>Hi, I'm Zeke</h1>
-        <p>Software Developer</p>
-      </section>
-
-      <!-- About Section -->
-      <section class="c-about">
-        <h2>About Me</h2>
-        <p>Brief introduction and background.</p>
-      </section>
-
-      <section class="c-achievements">
-        <h2>Achievements</h2>
-        <ul>
-          <li>Achievement 1</li>
-          <li>Achievement 2</li>
-          <li>Achievement 3</li>
-        </ul>
-      </section>
-
-      <!-- Projects Section -->
-      <section class="c-projects">
-        <h2>Projects</h2>
-        <ul>
-          <li>Project 1</li>
-          <li>Project 2</li>
-          <li>Project 3</li>
-        </ul>
-      </section>
-
-        <!-- Experience Section -->
-      <section class="c-experience">
-        <h2>Experience</h2>
-        <ul>
-          <li>Experience 1</li>
-          <li>Experience 2</li>
-          <li>Experience 3</li>
-        </ul>
-      </section>
-
-      <!-- Skills Section -->
-      <section class="c-skills">
-        <h2>Skills</h2>
-        <ul>
-          <li>Vue.js</li>
-          <li>TypeScript</li>
-          <li>CSS/SCSS</li>
-        </ul>
-      </section>
-
-      <!-- Contact Section -->
-      <section class="c-contact">
-        <h2>Contact</h2>
-        <p>Email: your@email.com</p>
-      </section>
+  <div class="c-header">
+    <div class="c-header__info">
+      <h1 class="c-header__title">./zeke/dev/portfolio_</h1>
+      <span class="c-header__version">Build: v1.0.0 - Theme: GMK Oblivion</span>
+    </div>
+    <span class="c-header__status">Status: Open to work</span>
+  </div>
+  <div class="c-homepage" :class="{ 'has-active': activeId }">
+    <section
+      v-for="s in sections"
+      :key="s.id"
+      :class="[s.class, { [`${s.class}--expanded`]: activeId === s.id }]"
+      @click="handleSectionClick(s)"
+    >
+      <h3 class="c-section-title">{{ s.title }}</h3>
+      <div class="c-section-content">
+        <p v-if="activeId !== s.id && !s.showContent">{{ s.content }}</p>
+        <component v-if="activeId === s.id || s.showContent" :is="componentMap[s.id]" />
+      </div>
+    </section>
+  </div>
+  <div class="c-footer">
+    <p>&copy; 2026 DESIGNED_BY_ZEKE. ALL_RIGHTS_RESERVED.</p>
+    <div class="c-footer__links">
+      <a href="https://github.com/Zeekeedee" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Twitter</a>
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import type { Component } from 'vue'
+import Experience from './Experience.vue'
+import AboutMe from './AboutMe.vue'
+import Contact from './Contact.vue'
+import TechStack from './TechStack.vue'
+
+interface Section {
+  id: string
+  title: string
+  class: string
+  content?: string
+  showContent?: boolean
+}
+
+const activeId = ref<string | null>(null)
+
+const componentMap: Record<string, Component> = {
+  experience: Experience,
+  about: AboutMe,
+  contact: Contact,
+  stack: TechStack,
+}
+
+const sections = ref<Section[]>([
+  { id: 'hero', title: "Hi, I'm Zeke ->", class: 'c-hero' },
+  { id: 'about', title: '01. About Me', content: 'Mid-level Software Developer with over 6 years of experience at Miller Development Company, specializing in front-end development and UI/UX improvement.', class: 'c-about' },
+  { id: 'stack', title: '02. Stack', class: 'c-stack', showContent: true },
+  { id: 'projects', title: 'Github', class: 'c-projects' },
+  { id: 'experience', title: 'Experience', class: 'c-experience' },
+  { id: 'skills', title: 'Skills', class: 'c-skills' },
+  { id: 'contact', title: '03. Contact', content: 'Start a conversation', class: 'c-contact' },
+])
+
+const handleSectionClick = (section: Section) => {
+  if (section.id === 'projects') {
+    window.open('https://github.com/Zeekeedee', '_blank')
+  } else {
+    toggleSection(section.id)
+  }
+}
+
+const toggleSection = (id: string) => {
+  activeId.value = activeId.value === id ? null : id
+}
+</script>

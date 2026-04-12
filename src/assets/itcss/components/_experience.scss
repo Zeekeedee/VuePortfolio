@@ -1,0 +1,57 @@
+.c-experience {
+  padding: 2rem 0;
+
+  &__title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  &__item {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #e0e0e0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+
+  &__company {
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem 0;
+  }
+
+  &__position {
+    font-weight: 600;
+    color: #555;
+  }
+
+  &__duration {
+    font-size: 0.9rem;
+    color: #999;
+  }
+
+  &__details {
+    list-style: none;
+    padding-left: 1.5rem;
+    margin: 1rem 0 0 0;
+  }
+
+  &__detail {
+    margin-bottom: 0.5rem;
+    color: #666;
+    line-height: 1.6;
+
+    &::before {
+      content: "•";
+      margin-right: 0.5rem;
+      color: #007bff;
+    }
+  }
+}

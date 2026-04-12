@@ -4,13 +4,28 @@
 $color-bg: #282828;
 $color-fg: #e2e2e2;
 $color-accent: #6c7d88;
-$color-mod: #767e81;
+$color-mod: #464746;
+$color-altmod: rgb(255 255 255 / 0.05);
 $color-legend: #f8f8f2;
 $color-orange: #ff9800;
-$color-green: #8ec07c;
-$color-blue: #458588;
-$color-purple: #b16286;
-$color-red: #fb4934;
+$color-green: rgba(166, 226, 46, 0.6);
+$color-border-green: rgb(166 226 46 / 0.3);
+$color-bg-green-dark:rgb(166 226 46 / 0.1);
+
+$color-purple: rgba(174, 129, 255, 0.6);
+$color-border-purple: rgb(174 129 255 / 0.3);
+$color-bg-purple-dark: rgb(174 129 255 / 0.1);
+
+$color-red: rgba(249, 38, 114, 0.6);
+$color-border-red: rgb(249 38 114 / 0.3);
+$color-bg-red-dark: rgb(249 38 114 / 0.1);
+
 $color-yellow: #fabd2f;
-$color-cyan: #689d6a;
-$color-comment: #928374;
+
+$color-cyan: rgb(102 217 239 / var(--tw-text-opacity, 1));
+
+$color-blue: rgba(102, 217, 239, 0.6);
+$color-border-blue: rgb(102 217 239 / 0.3);
+$color-bg-blue-dark: rgb(102 217 239 / 0.1);
+
+$color-comment: rgba(128, 128, 128, 0.6);
