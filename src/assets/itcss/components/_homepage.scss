@@ -42,8 +42,8 @@
 
 .c-homepage {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 180px;
+  grid-template-columns: var(--c1, 1fr) var(--c2, 1fr) var(--c3, 1fr) var(--c4, 1fr);
+  grid-template-rows: var(--r1, 180px) var(--r2, 180px) var(--r3, 180px);
   gap: 1rem;
   perspective: 1000px;
   min-height: calc(100vh - 180px - 60px);
@@ -52,18 +52,75 @@
   margin: 0 auto;
 
   color: colors.$color-fg;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    grid-template-columns 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+  // Stack expansion — stretch col 4 and rows 1-3
+  &.has-active {
+    &[class*='active-stack'] {
+      --c4: 2fr;
+      --r1: 200px;
+      --r2: 200px;
+      --r3: 200px;
+
+      .c-stack {
+        grid-row: 1 / 4;
+        grid-column: 4 / 5;
+        z-index: 2;
+      }
+      .c-contact {
+        grid-column: 3 / 4;
+        grid-row: 3 / 4;
+      }
+    }
+
+    // About expansion — stretch col 3 and row 1-2
+    &[class*='active-about'] {
+      --c3: 2fr;
+      --r1: 250px;
+      --r2: 250px;
+
+      .c-about {
+        grid-row: 1 / 3;
+        grid-column: 3 / 4;
+        z-index: 2;
+      }
+      .c-projects {
+        grid-row: 3 / 4;
+        grid-column: 3 / 4;
+      }
+      .c-contact {
+        grid-column: 3 / 5;
+        grid-row: 3 / 4;
+      }
+    }
+
+    // Contact expansion — stretch row 3
+    &[class*='active-contact'] {
+      --r3: 320px;
+
+      .c-contact {
+        grid-column: 1 / 5;
+        grid-row: 3 / 4;
+        z-index: 2;
+      }
+    }
+  }
 
   section {
     position: relative;
     border: 1px solid var(--section-border);
     border-radius: 1.5rem;
     padding: 2em;
-
     cursor: pointer;
     overflow: hidden;
     background-color: var(--section-bg);
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    // Remove transition: all — be explicit to avoid animating grid properties
+    transition:
+      filter 0.3s ease,
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
 
     &:hover {
       filter: brightness(1.15);
@@ -96,20 +153,24 @@
     flex-direction: column;
     justify-content: center;
     min-width: 220px;
-    grid-row: span 2 / span 2;
-    grid-column: span 2 / span 2;
+    grid-row: 1 / 3;
+    grid-column: 1 / 3;
   }
 
   .c-about {
     --section-bg: #{colors.$color-bg-blue-dark};
     --section-border: #{colors.$color-border-blue};
     --section-accent: #{colors.$color-blue};
+    grid-row: 1 / 2;
+    grid-column: 3 / 4;
   }
 
   .c-projects {
     --section-bg: #{colors.$color-bg-purple-dark};
     --section-border: #{colors.$color-border-purple};
     --section-accent: #{colors.$color-purple};
+    grid-row: 2 / 3;
+    grid-column: 3 / 4;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -121,18 +182,10 @@
       order: 1;
       width: 60px;
       height: 60px;
-      // background-image: url('../../icons/github-svgrepo-com.svg');
-      // color: var(--section-accent);
-      // background-repeat: no-repeat;
-      // background-position: center;
-      // background-size: contain;
-
       background-color: var(--section-accent, #fff);
       mask-image: url('../../icons/github-svgrepo-com.svg');
       mask-size: contain;
       mask-repeat: no-repeat;
-
-      // Use -webkit prefixes for broader browser support
       -webkit-mask-image: url('../../icons/github-svgrepo-com.svg');
       -webkit-mask-size: contain;
       -webkit-mask-repeat: no-repeat;
@@ -149,9 +202,8 @@
     --section-bg: #{colors.$color-bg-red-dark};
     --section-border: #{colors.$color-border-red};
     --section-accent: #{colors.$color-red};
-
-    grid-column: span 2 / span 2;
-    grid-row: span 1 / span 1;
+    grid-column: 3 / 5;
+    grid-row: 3 / 4;
     align-content: center;
   }
 
@@ -159,7 +211,8 @@
     --section-bg: #{colors.$color-bg-purple-dark};
     --section-border: #{colors.$color-border-purple};
     --section-accent: #{colors.$color-purple};
-
+    grid-row: 3 / 4;
+    grid-column: 2 / 3;
     padding: 2em;
   }
 
@@ -167,61 +220,16 @@
     --section-bg: #{colors.$color-bg-green-dark};
     --section-border: #{colors.$color-border-green};
     --section-accent: #{colors.$color-green};
-    grid-row: span 2 / span 2;
-    grid-column: span 1 / span 1;
+    grid-row: 1 / 3;
+    grid-column: 4 / 5;
   }
 
   .c-experience {
     --section-bg: #{colors.$color-mod};
     --section-border: #{colors.$color-cyan};
     --section-accent: #{colors.$color-cyan};
-    animation: collapseToSmall 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-
-    &--expanded {
-      grid-row: span 4 / span 2;
-      grid-column: span 2 / span 2;
-      animation: expandToLarge 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-  }
-}
-
-// Keyframe animations
-@keyframes expandToLarge {
-  0% {
-    grid-column: span 1;
-    grid-row: span 1;
-    opacity: 0.8;
-    transform: scale(0.95);
-  }
-  100% {
-    grid-column: 1 / span 3;
-    grid-row: 1 / span 3;
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes collapseToSmall {
-  0% {
-    grid-column: 1 / span 3;
-    grid-row: 1 / span 3;
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    grid-column: span 1;
-    grid-row: span 1;
-    opacity: 0.8;
-    transform: scale(0.95);
-  }
-}
-
-@keyframes contentFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
+    grid-row: 3 / 4;
+    grid-column: 1 / 2;
   }
 }
 
