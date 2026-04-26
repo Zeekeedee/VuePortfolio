@@ -6,11 +6,12 @@
     </div>
     <span class="c-header__status">Status: Open to work</span>
   </div>
-  <div class="c-homepage" :class="{ 'has-active': activeId }">
+  <div class="c-homepage" :class="{ 'has-active': activeId, [`active-${activeId}`]: !!activeId }">
     <section
       v-for="s in sections"
       :key="s.id"
       :class="[s.class, { [`${s.class}--expanded`]: activeId === s.id }]"
+      ref="items"
       @click="handleSectionClick(s)"
     >
       <h3 class="c-section-title">{{ s.title }}</h3>
@@ -31,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import type { Component } from 'vue'
 import Experience from './Experience.vue'
 import AboutMe from './AboutMe.vue'
@@ -47,6 +48,7 @@ interface Section {
 }
 
 const activeId = ref<string | null>(null)
+const items = ref<HTMLElement[]>([])
 
 const componentMap: Record<string, Component> = {
   experience: Experience,
@@ -57,7 +59,7 @@ const componentMap: Record<string, Component> = {
 
 const sections = ref<Section[]>([
   { id: 'hero', title: "Hi, I'm Zeke ->", class: 'c-hero' },
-  { id: 'about', title: '01. About Me', content: 'Mid-level Software Developer with over 6 years of experience at Miller Development Company, specializing in front-end development and UI/UX improvement.', class: 'c-about' },
+  { id: 'about', title: '01. About Me', content: 'A quick look at who I am and what I build', class: 'c-about' },
   { id: 'stack', title: '02. Stack', class: 'c-stack', showContent: true },
   { id: 'projects', title: 'Github', class: 'c-projects' },
   { id: 'experience', title: 'Experience', class: 'c-experience' },
@@ -65,15 +67,51 @@ const sections = ref<Section[]>([
   { id: 'contact', title: '03. Contact', content: 'Start a conversation', class: 'c-contact' },
 ])
 
+const EXPANDABLE = new Set(['about', 'stack', 'contact'])
+
 const handleSectionClick = (section: Section) => {
   if (section.id === 'projects') {
     window.open('https://github.com/Zeekeedee', '_blank')
-  } else {
+  } else if (EXPANDABLE.has(section.id)) {
     toggleSection(section.id)
   }
 }
 
-const toggleSection = (id: string) => {
+function animateFlip(elements: HTMLElement[], firstRects: DOMRect[]) {
+  elements.forEach((el, i) => {
+    const first = firstRects[i]
+    const last = el.getBoundingClientRect()
+    const dx = first.left - last.left
+    const dy = first.top - last.top
+    const scaleX = first.width / last.width
+    const scaleY = first.height / last.height
+
+    if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5 && Math.abs(scaleX - 1) < 0.005 && Math.abs(scaleY - 1) < 0.005) return
+
+    // Expanding items wait for siblings to clear the space first.
+    // fill: 'backwards' holds the first keyframe during the delay so the
+    // item stays visually pinned at its old (smaller) position until it starts.
+    const isExpanding = last.width > first.width || last.height > first.height
+    const delay = isExpanding ? 100 : 0
+
+    el.getAnimations().forEach((a) => a.cancel())
+    el.animate(
+      [
+        { transformOrigin: 'top left', transform: `translate(${dx}px, ${dy}px) scale(${scaleX}, ${scaleY})` },
+        { transformOrigin: 'top left', transform: 'none' },
+      ],
+      { duration: 200, delay, easing: 'cubic-bezier(0.4, 0, 0.2, 1)', fill: isExpanding ? 'backwards' : 'none' },
+    )
+  })
+}
+
+const toggleSection = async (id: string) => {
+  const elements = [...items.value]
+  const firstRects = elements.map((el) => el.getBoundingClientRect())
+
   activeId.value = activeId.value === id ? null : id
+
+  await nextTick()
+  requestAnimationFrame(() => animateFlip(elements, firstRects))
 }
 </script>
