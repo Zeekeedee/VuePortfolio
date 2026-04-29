@@ -5,11 +5,13 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  padding: 1.5em 2em 1em 2em;
-  border-radius: 0.5em;
-  margin-bottom: 2em;
-  width: min(1400px, 90%);
-  margin: 0 auto;
+  padding: 1.5em 5% 1em;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background-color: colors.$color-bg;
 
   &__title {
     color: colors.$color-cyan;
@@ -49,6 +51,8 @@
   gap: 1rem;
   width: min(1400px, 90%);
   padding: 2em;
+  padding-top: calc(2em + 6.5rem);
+  padding-bottom: calc(2em + 3.5rem);
   margin: 0 auto;
 
   color: colors.$color-text;
@@ -89,6 +93,10 @@
   }
 
   .c-section-content {
+    display: flex;
+    flex-flow: column;
+    flex: 1 1 auto;
+
     font-size: 0.875em;
     font-weight: 400;
     line-height: 1.5;
@@ -212,6 +220,32 @@
     grid-column: 3 / span 2;
     grid-row: 3;
     justify-content: center;
+
+    &::after {
+      content: '';
+      position: absolute;
+      right: 1.5em;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1.5em;
+      height: 1.5em;
+      background-color: colors.$color-text;
+      mask-image: url('../../icons/arrow-right.svg');
+      mask-size: contain;
+      mask-repeat: no-repeat;
+      mask-position: center;
+      -webkit-mask-image: url('../../icons/arrow-right.svg');
+      -webkit-mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-position: center;
+      pointer-events: none;
+      opacity: 0.8;
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    &:hover::after {
+      transform: translateY(-50%) translateX(0.3em);
+    }
   }
 
   // ── Expanded states ─────────────────────────────────────────────────────────
@@ -261,6 +295,12 @@
     grid-column: 3 / span 2;
     grid-row: 2 / span 2;
     z-index: 1; // paint over the ghost projects cell
+    justify-content: flex-start;
+    padding: 2rem 2rem 3rem 2rem;
+
+    &::after {
+      display: none;
+    }
   }
 
   // ── Sibling adjustments via parent active class ──────────────────────────────
@@ -306,11 +346,14 @@
 
 .c-footer {
   display: flex;
-  margin-inline: 2em;
-  width: min(1400px, 90%);
-  margin: 0 auto;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background-color: colors.$color-bg;
   border-top: 1px solid colors.$color-altmod;
-  padding-top: 2em;
+  padding: 2em 5%;
   justify-content: space-between;
   font-size: 0.75em;
   color: colors.$color-comment;
